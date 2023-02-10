@@ -1,0 +1,12 @@
+.Pokedex {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	background-color: aliceblue;
+}
+
+.Pokedex-header {
+	display: block;
+	width: 100%;
+	color: gray;
+}
