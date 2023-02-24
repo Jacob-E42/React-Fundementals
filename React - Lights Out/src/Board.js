@@ -32,7 +32,6 @@ function Board({ nrows = 4, ncols = 4, chanceLightStartsOn = 0.5 }) {
 
 	/** create a board nrows high/ncols wide, each cell randomly lit or unlit */
 	function createBoard() {
-		console.log("here ia am");
 		let initialBoard = [];
 		// TODO: create array-of-arrays of true/false values
 		function generateRandomBoolean(chanceLightStartsOn) {
@@ -40,7 +39,7 @@ function Board({ nrows = 4, ncols = 4, chanceLightStartsOn = 0.5 }) {
 		}
 		for (let row = 0; row < nrows; row++) {
 			initialBoard[row] = Array.from({ length: ncols });
-			console.log(initialBoard[row]);
+			// console.log(initialBoard[row]);
 			for (let col = 0; col < ncols; col++) {
 				initialBoard[row][col] = generateRandomBoolean(chanceLightStartsOn);
 			}
@@ -50,6 +49,12 @@ function Board({ nrows = 4, ncols = 4, chanceLightStartsOn = 0.5 }) {
 
 	function hasWon() {
 		// TODO: check the board in state to determine whether the player has won.
+		for (let row = 0; row < nrows; row++) {
+			for (let col = 0; col < ncols; col++) {
+				if (board[row][col] === true) return false;
+			}
+		}
+		return true;
 	}
 
 	function flipCellsAround(coord) {
