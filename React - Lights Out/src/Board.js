@@ -27,28 +27,24 @@ import "./Board.css";
  *
  **/
 
-function Board({ nrows = 4, ncols = 4, chanceLightStartsOn = 0.5 }) {
+function Board({ nrows = 5, ncols = 5, chanceLightStartsOn = 0.25 }) {
 	const [board, setBoard] = useState(createBoard());
 
 	/** create a board nrows high/ncols wide, each cell randomly lit or unlit */
 	function createBoard() {
 		let initialBoard = [];
-		// TODO: create array-of-arrays of true/false values
-		function generateRandomBoolean(chanceLightStartsOn) {
-			return Math.random() < chanceLightStartsOn;
-		}
+		// create array-of-arrays of true/false values
 		for (let row = 0; row < nrows; row++) {
 			initialBoard[row] = Array.from({ length: ncols });
-			// console.log(initialBoard[row]);
 			for (let col = 0; col < ncols; col++) {
-				initialBoard[row][col] = generateRandomBoolean(chanceLightStartsOn);
+				initialBoard[row][col] = Math.random() < chanceLightStartsOn;
 			}
 		}
 		return initialBoard;
 	}
 
 	function hasWon() {
-		// TODO: check the board in state to determine whether the player has won.
+		// check the board in state to determine whether the player has won.
 		for (let row = 0; row < nrows; row++) {
 			for (let col = 0; col < ncols; col++) {
 				if (board[row][col] === true) return false;
@@ -68,23 +64,22 @@ function Board({ nrows = 4, ncols = 4, chanceLightStartsOn = 0.5 }) {
 				}
 			};
 
-			// TODO: Make a (deep) copy of the oldBoard
+			// Make a (deep) copy of the oldBoard
 			const boardCopy = oldBoard.map((row) => [...row].map((col) => col));
-			// TODO: in the copy, flip this cell and the cells around it
+			// in the copy, flip this cell and the cells around it
 			flipCell(y, x, boardCopy);
 			if (y - 1 >= 0) flipCell(y - 1, x, boardCopy);
 			if (y + 1 < ncols) flipCell(y + 1, x, boardCopy);
 			if (x - 1 >= 0) flipCell(y, x - 1, boardCopy);
 			if (x + 1 < nrows) flipCell(y, x + 1, boardCopy);
 
-			// TODO: return the copy
+			// return the copy
 			return boardCopy;
 		});
 	}
 
 	// if the game is won, just show a winning msg & render nothing else
 	if (hasWon()) return <p>You won!</p>;
-	// TODO
 
 	// make table board
 	return (
@@ -100,7 +95,6 @@ function Board({ nrows = 4, ncols = 4, chanceLightStartsOn = 0.5 }) {
 			</tbody>
 		</table>
 	);
-	// TODO
 }
 
 export default Board;
