@@ -1,0 +1,10 @@
+div {
+	text-align: left;
+	display: inline-block;
+	margin: 5px;
+}
+
+button {
+	display: inline;
+	margin: 5px;
+}
