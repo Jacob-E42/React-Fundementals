@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Card from "./Card";
 import axios from "axios";
 
@@ -17,23 +17,24 @@ const CardDeck = () => {
 		setUpCardDeck();
 	}, []);
 
-	useEffect(() => {
-		async function drawCards() {
-			try {
-				if (cardsRemaining === 0) {
-					setAutoDraw(false);
-					throw new Error("No cards remaining!");
-				}
-				const response = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId.current}/draw`);
-				const { cards } = response.data;
-				setCardsRemaining(cardsRemaining => cardsRemaining - 1);
-				setCurrentCard(() => {
-					return <Card image={cards[0].image} />;
-				});
-			} catch (err) {
-				alert(err);
+	const drawCards = useCallback(async () => {
+		try {
+			if (cardsRemaining === 0) {
+				setAutoDraw(false);
+				throw new Error("No cards remaining!");
 			}
+			const response = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId.current}/draw`);
+			const { cards } = response.data;
+			setCardsRemaining(cardsRemaining => cardsRemaining - 1);
+			setCurrentCard(() => {
+				return <Card image={cards[0].image} />;
+			});
+		} catch (err) {
+			alert(err);
 		}
+	}, [cardsRemaining]);
+
+	useEffect(() => {
 		if (autoDraw && !timerId.current) {
 			timerId.current = setInterval(async () => {
 				await drawCards();
