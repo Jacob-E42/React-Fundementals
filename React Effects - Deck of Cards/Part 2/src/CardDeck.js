@@ -4,8 +4,10 @@ import axios from "axios";
 
 const CardDeck = () => {
 	const deckId = useRef();
+	const timerId = useRef();
 	const [cardsRemaining, setCardsRemaining] = useState(52);
 	const [currentCard, setCurrentCard] = useState(null);
+	const [autoDraw, setAutoDraw] = useState(false);
 
 	useEffect(() => {
 		async function setUpCardDeck() {
@@ -15,31 +17,41 @@ const CardDeck = () => {
 		setUpCardDeck();
 	}, []);
 
-	// useEffect(() => {
-	// 	if (cardsRemaining <= 0) {
-	// 		displayCard = () => {
-
-	// 		};
-	// 	}
-	// }, [cardsRemaining]);
-
-	let displayCard = () => {
-		if (cardsRemaining >= 1) {
-			async function drawCard() {
+	useEffect(() => {
+		async function drawCards() {
+			try {
+				if (cardsRemaining === 0) {
+					setAutoDraw(false);
+					throw new Error("No cards remaining!");
+				}
 				const response = await axios.get(`https://deckofcardsapi.com/api/deck/${deckId.current}/draw`);
 				const { cards } = response.data;
-				setCardsRemaining(() => cardsRemaining - 1);
+				setCardsRemaining(cardsRemaining => cardsRemaining - 1);
 				setCurrentCard(() => {
 					return <Card image={cards[0].image} />;
 				});
+			} catch (err) {
+				alert(err);
 			}
-			drawCard();
-		} else alert("Error: no cards remaining!");
+		}
+		if (autoDraw && !timerId.current) {
+			timerId.current = setInterval(async () => {
+				await drawCards();
+			}, 300);
+		}
+		return () => {
+			clearInterval(timerId.current);
+			timerId.current = null;
+		};
+	}, [autoDraw, cardsRemaining]);
+
+	const toggleAutoDraw = () => {
+		setAutoDraw(autoDraw => !autoDraw);
 	};
 
 	return (
 		<div>
-			<button onClick={displayCard}>Give me a Card!</button>
+			<button onClick={toggleAutoDraw}>{autoDraw ? "Stop" : "Start"} Drawing!</button>
 			<p>Number of Cards Remaining: {cardsRemaining}</p>
 			<div>{currentCard}</div>
 		</div>

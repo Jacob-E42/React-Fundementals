@@ -10,7 +10,8 @@ const Box = ({ id, backgroundColor, width, height, remove }) => {
 					height: `${height}px`,
 					width: `${width}px`,
 					backgroundColor
-				}}></div>
+				}}
+			/>
 			<button onClick={handleRemove}>X</button>
 		</div>
 	);

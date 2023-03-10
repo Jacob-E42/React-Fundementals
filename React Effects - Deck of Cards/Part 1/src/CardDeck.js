@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Card from "./Card";
 import axios from "axios";
 
 const CardDeck = () => {
 	const deckId = useRef();
+
 	const [cardsRemaining, setCardsRemaining] = useState(52);
 	const [currentCard, setCurrentCard] = useState(null);
 
@@ -39,7 +40,7 @@ const CardDeck = () => {
 
 	return (
 		<div>
-			<button onClick={displayCard}>Give me a Card!</button>
+			<button onClick={displayCard}>Gimme a Card!</button>
 			<p>Number of Cards Remaining: {cardsRemaining}</p>
 			<div>{currentCard}</div>
 		</div>
