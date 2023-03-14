@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import uuid from "uuid";
 import axios from "axios";
 
@@ -10,10 +10,11 @@ const useFlip = () => {
 	return [isFacingUp, flip];
 };
 
-const useAxios = url => {
+const useAxios = (baseUrl, param = "") => {
 	const [cards, setCards] = useState([]);
-	const addResponse = async () => {
-		const response = await axios.get(`${url}`);
+	const addResponse = async (evt, param = null) => {
+		const url = param ? `${baseUrl}${param}/` : `${baseUrl}`;
+		const response = await axios.get(url);
 		setCards(cards => [...cards, { ...response.data, id: uuid() }]);
 	};
 	return [cards, addResponse];
