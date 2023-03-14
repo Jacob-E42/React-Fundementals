@@ -1,3 +1,5 @@
+Prompt: https://curric.springboard.com/software-engineering-career-track/default/exercises/react-cards-pokemon/
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
